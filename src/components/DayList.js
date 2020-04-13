@@ -4,16 +4,16 @@ import DayListItem from "components/DayListItem";
 //@param day => string
 //@param setDay => function(nameOfday)
 
-const DayList = ({ days, day, setDay }) => {
+const DayList = ({ days, value, onChange }) => {
   return (
     <ul>
       {days.map(e => (
         <DayListItem
           key={e.id}
-          name={e.name}
+          value={e.name}
           spots={e.spots}
-          setDay={setDay}
-          selected={e.name === day}
+          onChange={event => onChange(e.name)}
+          selected={e.name === value}
         />
       ))}
     </ul>
