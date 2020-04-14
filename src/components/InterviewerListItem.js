@@ -19,7 +19,7 @@ const InterviewerListItem = ({
 
   return (
   <li className={interviewerClass} onClick={onChange}>
-    <img className={`${interviewerClass}-image`} src={avatar} alt={name}/>
+    <img className={'interviewers__item-image'} src={avatar} alt={name}/>
     {selected && name}
   </li>
   );

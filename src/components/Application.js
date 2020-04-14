@@ -2,6 +2,7 @@ import React, { useState }from "react";
 
 import "components/Application.scss";
 import DayList from "./DayList";
+import Appointment from 'components/Appointment';
 
 const days = [
   {
@@ -26,6 +27,7 @@ const days = [
 export default function Application(props) {
 
   const [day, setDay] = useState("Monday")
+
 
   return (
     <main className="layout">
