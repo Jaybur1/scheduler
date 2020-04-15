@@ -3,7 +3,7 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "components/Appointment";
-import { APPOINTMENTS } from "constants.js";
+import { APPOINTMENTS } from "helpers/constants.js";
 
 export default function Application(props) {
   const [day, setDay] = useState("Monday");
