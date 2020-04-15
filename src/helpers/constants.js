@@ -1,4 +1,3 @@
-
 export const DAYS = [
   {
     id: 1,
@@ -47,8 +46,8 @@ export const APPOINTMENTS = [
     }
   },
   {
-    id:4,
-    time:"3pm"
+    id: 4,
+    time: "3pm"
   },
   {
     id: 5,
@@ -63,3 +62,5 @@ export const APPOINTMENTS = [
     }
   }
 ];
+
+export const [EMPTY, SHOW, CREATE] = ["EMPTY", "SHOW", "CREATE"];

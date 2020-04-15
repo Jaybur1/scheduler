@@ -31,10 +31,10 @@ export default function Application(props) {
     });
   }, []);
 
-  const { day, days } = state;
+  const { day, days, interviewers } = state;
   const appointments = getAppointmentsForDay(state, day).map(appointment => {
     const interview = getInterview(state,appointment.interview);
-    return <Appointment key={appointment.id} {...appointment} interview={interview}/>;
+    return <Appointment key={appointment.id} {...appointment} interview={interview} interviewers={Object.values(interviewers)}/>;
   });
 
   return (
