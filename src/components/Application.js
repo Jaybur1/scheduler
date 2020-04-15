@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
@@ -6,17 +6,28 @@ import Appointment from "components/Appointment";
 import { APPOINTMENTS } from "helpers/constants.js";
 
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
-  const [days, setDays] = useState([]);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {}
+  });
+  const setDay = day => setState({...state, day});
+  const setDays = days => setState(prev => ({...prev, days}));
+
 
   useEffect(() => {
-    axios.get('/api/days')
-    .then(response => {
-      return setDays([...response.data]);
-    }).catch(err => console.error(err));
-  
-  })
+    axios
+      .get("/api/days")
+      .then(response => {
+        return setDays(response.data);
+      })
+      .catch(err => console.error(err));
+  },[]);
 
+  const {day, days, appointments} = state;
+
+  
+  
   return (
     <main className="layout">
       <section className="sidebar">
@@ -37,9 +48,9 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {APPOINTMENTS.map(appointment => (
-          <Appointment key={appointment.id} {...appointment}/>
+          <Appointment key={appointment.id} {...appointment} />
         ))}
-          <Appointment key="last" time="5pm" />
+        <Appointment key="last" time="5pm" />
       </section>
     </main>
   );
