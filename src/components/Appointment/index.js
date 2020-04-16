@@ -38,18 +38,13 @@ const Appointment = ({
   };
 
   const handleOnSave = (name, interviewer) => {
-    if(interviewer > 0) {
       const interview = {
         student: name,
         interviewer
       };
   
       transition(SAVING, true);
-      onCreate(id, interview).then(res => transition(res));
-    }else {
-      transition(SAVING,true);
-      setTimeout(()=>transition(SAVING_ERROR,true),1000)
-    }
+      onCreate(id, interview).then(res => transition(res))
   };
 
   const handleOnDelete = () => {
@@ -78,7 +73,7 @@ const Appointment = ({
       )}
       {mode === SAVING_ERROR && (
         <Error
-          message="Something went wrong while saving... ?"
+          message="Something went wrong while saving..."
           onClose={handleOnCancel}
         />
       )}
