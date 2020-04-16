@@ -11,11 +11,14 @@ import {
   SAVING,
   DELETING,
   CONFIRM,
-  EDIT
+  EDIT,
+  SAVING_ERROR,
+  DELETING_ERROR
 } from "helpers/constants";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 const Appointment = ({
   time,
   interview,
@@ -35,27 +38,32 @@ const Appointment = ({
   };
 
   const handleOnSave = (name, interviewer) => {
-    const interview = {
-      student: name,
-      interviewer
-    };
-
-    transition(SAVING);
-    onCreate(id, interview).then(res => transition(SHOW));
+    if(interviewer > 0) {
+      const interview = {
+        student: name,
+        interviewer
+      };
+  
+      transition(SAVING, true);
+      onCreate(id, interview).then(res => transition(res));
+    }else {
+      transition(SAVING,true);
+      setTimeout(()=>transition(SAVING_ERROR,true),1000)
+    }
   };
 
   const handleOnDelete = () => {
-    transition(CONFIRM);
+    transition(CONFIRM,true);
   };
 
   const handleConfirm = () => {
-    transition(DELETING);
-    onDelete(id).then(res => transition(EMPTY));
+    transition(DELETING, true);
+    onDelete(id).then(res => transition(res));
   };
 
   const handleOnEdit = () => {
     transition(EDIT);
-  }
+  };
   return (
     <article className="appointment">
       <Header time={time} />
@@ -66,6 +74,18 @@ const Appointment = ({
           interviewer={interview.interviewer}
           onDelete={handleOnDelete}
           onEdit={handleOnEdit}
+        />
+      )}
+      {mode === SAVING_ERROR && (
+        <Error
+          message="Something went wrong while saving... ?"
+          onClose={handleOnCancel}
+        />
+      )}
+      {mode === DELETING_ERROR && (
+        <Error
+          message="Something went wrong while deleting..."
+          onClose={handleOnCancel}
         />
       )}
       {mode === SAVING && <Status message="Saving ..." />}

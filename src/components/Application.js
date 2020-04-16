@@ -8,6 +8,7 @@ import {
   getInterview,
   getInterviewersForDay
 } from "helpers/selectors";
+import { SAVING_ERROR, DELETING_ERROR,EMPTY,SHOW } from "helpers/constants";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -19,7 +20,7 @@ export default function Application(props) {
   const setDay = day => setState({ ...state, day });
 
   const updateDataFromDb = () => {
-    Promise.all([
+    return Promise.all([
       Promise.resolve(axios.get("/api/days")),
       Promise.resolve(axios.get("/api/appointments")),
       Promise.resolve(axios.get("/api/interviewers"))
@@ -32,12 +33,12 @@ export default function Application(props) {
         appointments: { ...appointments.data },
         interviewers: { ...interviewers.data }
       }));
-    });
-  }
-
+    })
+    .catch(err => alert(err))
+  };
 
   useEffect(() => {
-   updateDataFromDb()
+    updateDataFromDb();
   }, []);
 
   const { day, days } = state;
@@ -45,40 +46,48 @@ export default function Application(props) {
   const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
-      interview: {...interview}
-    }
+      interview: { ...interview }
+    };
 
-    const appointments ={
+    const appointments = {
       ...state.appointments,
-      [id]:appointment
-    }
-    return axios.put(`/api/appointments/${id}`,{...appointment})
-    .then(res => {
-      updateDataFromDb();
-      setState(prev => ({...prev,appointments}))
-      return res.status
-    })
-    .catch(err => console.error(err))
+      [id]: appointment
+    };
+    return axios
+      .put(`/api/appointments/${id}`, { ...appointment })
+      .then(res => {
+        updateDataFromDb();
+        setState(prev => ({ ...prev, appointments }));
+        return SHOW;
+      })
+      .catch(err => {
+        console.error(err);
+        return SAVING_ERROR;
+      });
   };
 
-  const cancelInterview = (id) => {
+  const cancelInterview = id => {
     const appointment = {
       ...state.appointments[id],
-      interview:null
+      interview: null
     };
     const appointments = {
       ...state.appointments,
-      [id]:appointment
-    }
+      [id]: appointment
+    };
 
-    return axios.delete(`/api/appointments/${id}`)
-    .then(res => {
-      updateDataFromDb();
-      setState(prev => ({...prev,appointments}))
-      return res.status
-    })
-    .catch(err => console.error(err))
-  }
+    return axios
+      .delete(`/api/appointments/${id}`)
+      .then(res => {
+        updateDataFromDb();
+        setState(prev => ({ ...prev, appointments }));
+        return EMPTY;
+      })
+      .catch(err => {
+        console.error(err);
+        return DELETING_ERROR;
+      });
+  };
 
   const appointments = getAppointmentsForDay(state, day).map(appointment => {
     const interview = getInterview(state, appointment.interview);

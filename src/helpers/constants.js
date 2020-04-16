@@ -63,12 +63,24 @@ export const APPOINTMENTS = [
   }
 ];
 
-export const [EMPTY, SHOW, CREATE, SAVING, DELETING, CONFIRM, EDIT] = [
+export const [
+  EMPTY,
+  SHOW,
+  CREATE,
+  SAVING,
+  DELETING,
+  CONFIRM,
+  EDIT,
+  SAVING_ERROR,
+  DELETING_ERROR
+] = [
   "EMPTY",
   "SHOW",
   "CREATE",
   "SAVING",
   "DELETING",
   "CONFIRM",
-  "EDIT"
+  "EDIT",
+  "SAVING_ERROR",
+  "DELETING_ERROR"
 ];
