@@ -11,7 +11,9 @@ export default function useApplicationData() {
   });
   const setDay = day => setState({ ...state, day });
 
-  const updateDataFromDb = () => {
+
+
+  const getDataFromDb = () => {
     return Promise.all([
       Promise.resolve(axios.get("/api/days")),
       Promise.resolve(axios.get("/api/appointments")),
@@ -19,7 +21,6 @@ export default function useApplicationData() {
     ])
       .then(all => {
         const [days, appointments, interviewers] = all;
-
         return setState(prev => ({
           ...prev,
           days: [...days.data],
@@ -30,8 +31,17 @@ export default function useApplicationData() {
       .catch(err => alert(err));
   };
 
+  const updateSpotsFromDb = () => {
+    return axios.get("/api/days")
+    .then(days => {
+      setState(prev => ({
+        ...prev,days: [...days.data]
+      }))
+    })
+  }
+
   useEffect(() => {
-    updateDataFromDb();
+    getDataFromDb();
   }, []);
 
   const bookInterview = (id, interview) => {
@@ -47,7 +57,7 @@ export default function useApplicationData() {
     return axios
       .put(`/api/appointments/${id}`, { ...appointment })
       .then(res => {
-        updateDataFromDb();
+        updateSpotsFromDb()
         setState(prev => ({ ...prev, appointments }));
         return SHOW;
       })
@@ -70,7 +80,7 @@ export default function useApplicationData() {
     return axios
       .delete(`/api/appointments/${id}`)
       .then(res => {
-        updateDataFromDb();
+        updateSpotsFromDb();
         setState(prev => ({ ...prev, appointments }));
         return EMPTY;
       })
