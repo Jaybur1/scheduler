@@ -63,4 +63,4 @@ export const APPOINTMENTS = [
   }
 ];
 
-export const [EMPTY, SHOW, CREATE] = ["EMPTY", "SHOW", "CREATE"];
+export const [EMPTY, SHOW, CREATE,SAVING] = ["EMPTY", "SHOW", "CREATE", "SAVING"];

@@ -37,7 +37,7 @@ const Form = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     reset();
-    props.onSave();
+    props.onSave(name,interviewer);
   }
 
   return (

@@ -3,7 +3,11 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay
+} from "helpers/selectors";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -14,14 +18,14 @@ export default function Application(props) {
   });
   const setDay = day => setState({ ...state, day });
 
-  useEffect(() => {
+  const updateDataFromDb = () => {
     Promise.all([
       Promise.resolve(axios.get("/api/days")),
       Promise.resolve(axios.get("/api/appointments")),
       Promise.resolve(axios.get("/api/interviewers"))
     ]).then(all => {
       const [days, appointments, interviewers] = all;
-      console.log(interviewers.data);
+
       return setState(prev => ({
         ...prev,
         days: [...days.data],
@@ -29,12 +33,45 @@ export default function Application(props) {
         interviewers: { ...interviewers.data }
       }));
     });
+  }
+
+  useEffect(() => {
+   updateDataFromDb()
   }, []);
 
   const { day, days } = state;
+
+  const bookInterview = (id, interview) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: {...interview}
+    }
+
+    const appointments ={
+      ...state.appointments,
+      [id]:appointment
+    }
+    return axios.put(`/api/appointments/${id}`,{...appointment})
+    .then(res => {
+       updateDataFromDb();
+       setState(prev => ({...prev,appointments}))
+       return res.status
+    })
+    .catch(err => console.error(err))
+  };
+
   const appointments = getAppointmentsForDay(state, day).map(appointment => {
-    const interview = getInterview(state,appointment.interview);
-    return <Appointment key={appointment.id} {...appointment} interview={interview} interviewers={getInterviewersForDay(state,day)}/>;
+    const interview = getInterview(state, appointment.interview);
+    const interviewers = getInterviewersForDay(state, day);
+    return (
+      <Appointment
+        key={appointment.id}
+        {...appointment}
+        interview={interview}
+        interviewers={interviewers}
+        onCreate={bookInterview}
+      />
+    );
   });
 
   return (
