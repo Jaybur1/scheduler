@@ -10,7 +10,8 @@ import {
   CREATE,
   SAVING,
   DELETING,
-  CONFIRM
+  CONFIRM,
+  EDIT
 } from "helpers/constants";
 import Form from "./Form";
 import Status from "./Status";
@@ -51,6 +52,10 @@ const Appointment = ({
     transition(DELETING);
     onDelete(id).then(res => transition(EMPTY));
   };
+
+  const handleOnEdit = () => {
+    transition(EDIT);
+  }
   return (
     <article className="appointment">
       <Header time={time} />
@@ -60,6 +65,7 @@ const Appointment = ({
           student={interview.student}
           interviewer={interview.interviewer}
           onDelete={handleOnDelete}
+          onEdit={handleOnEdit}
         />
       )}
       {mode === SAVING && <Status message="Saving ..." />}
@@ -78,8 +84,16 @@ const Appointment = ({
           onCancel={handleOnCancel}
         />
       )}
+      {mode === EDIT && (
+        <Form
+          name={interview.student}
+          interviewer={interview.interviewer.id}
+          interviewers={interviewers}
+          onSave={handleOnSave}
+          onCancel={handleOnCancel}
+        />
+      )}
     </article>
   );
 };
-
 export default Appointment;
