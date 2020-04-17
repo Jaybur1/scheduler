@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { SHOW, EMPTY, SAVING_ERROR, DELETING_ERROR } from "helpers/constants";
+import {
+  SHOW,
+  EMPTY,
+  SAVING_ERROR,
+  DELETING_ERROR,
+  SET_INTERVIEW
+} from "helpers/constants";
 
 export default function useApplicationData() {
   const [state, setState] = useState({
@@ -10,7 +16,6 @@ export default function useApplicationData() {
     interviewers: {}
   });
   const setDay = day => setState({ ...state, day });
-
 
   const getDataFromDb = () => {
     return Promise.all([
@@ -31,24 +36,30 @@ export default function useApplicationData() {
   };
 
   const updateSpotsFromDb = () => {
-    return axios.get("/api/days")
-    .then(days => {
+    return axios.get("/api/days").then(days => {
       setState(prev => ({
-        ...prev,days: [...days.data]
-      }))
-    })
-  }
+        ...prev,
+        days: [...days.data]
+      }));
+    });
+  };
 
   useEffect(() => {
-    const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL)
+    const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     const readyState = webSocket.readyState;
-    console.log("state",readyState)
-    webSocket.onopen = (e) => {
-      webSocket.send("ping")
-    }
+    console.log("state", readyState);
+    webSocket.onopen = e => {
+      webSocket.send("ping");
+    };
+    webSocket.onmessage = e => {
+      const data = JSON.parse(e.data);
+      if (data.type === SET_INTERVIEW) {
+      //  updateAppointments(data.id, data.interview);
+       return getDataFromDb();
+      }
+    };
     getDataFromDb();
     return () => webSocket.close();
-
   }, []);
 
   const bookInterview = (id, interview) => {
@@ -64,7 +75,7 @@ export default function useApplicationData() {
     return axios
       .put(`/api/appointments/${id}`, { ...appointment })
       .then(res => {
-        updateSpotsFromDb()
+        updateSpotsFromDb();
         setState(prev => ({ ...prev, appointments }));
         return SHOW;
       })
@@ -95,6 +106,6 @@ export default function useApplicationData() {
         console.error(err);
         return DELETING_ERROR;
       });
-  };  
+  };
   return { state, setDay, bookInterview, cancelInterview };
 }
