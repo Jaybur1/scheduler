@@ -12,7 +12,6 @@ export default function useApplicationData() {
   const setDay = day => setState({ ...state, day });
 
 
-
   const getDataFromDb = () => {
     return Promise.all([
       Promise.resolve(axios.get("/api/days")),
@@ -41,7 +40,15 @@ export default function useApplicationData() {
   }
 
   useEffect(() => {
+    const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL)
+    const readyState = webSocket.readyState;
+    console.log("state",readyState)
+    webSocket.onopen = (e) => {
+      webSocket.send("ping")
+    }
     getDataFromDb();
+    return () => webSocket.close();
+
   }, []);
 
   const bookInterview = (id, interview) => {
