@@ -3,8 +3,13 @@ import classnames from "classnames";
 
 import "components/Button.scss";
 
-
-export default function Button({ children,confirm,danger,disabled,onClick }) {
+export default function Button({
+  children,
+  confirm,
+  danger,
+  disabled,
+  onClick
+}) {
   let buttonClass = classnames("button", {
     "button--confirm": confirm,
     "button--danger": danger

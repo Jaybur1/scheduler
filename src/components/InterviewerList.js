@@ -16,7 +16,9 @@ const InterviewerList = ({ interviewers, value, onChange }) => {
             name={e.name}
             avatar={e.avatar}
             selected={value === e.id}
-            onChange={event => {onChange(e.id)}}
+            onChange={event => {
+              onChange(e.id);
+            }}
           />
         ))}
       </ul>

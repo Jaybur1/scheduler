@@ -1,10 +1,14 @@
 import React from "react";
 
-const Empty = ({onAdd}) => {
-
+const Empty = ({ onAdd }) => {
   return (
     <main className="appointment__add">
-      <img className="appointment__add-button" src="images/add.png" alt="Add" onClick ={onAdd}/>
+      <img
+        className="appointment__add-button"
+        src="images/add.png"
+        alt="Add"
+        onClick={onAdd}
+      />
     </main>
   );
 };

@@ -31,10 +31,10 @@ const Appointment = ({
 
   useEffect(() => {
     if (interview && mode === EMPTY) transition(SHOW);
-     
-     if (interview === null && mode === SHOW) transition(EMPTY);
+
+    if (interview === null && mode === SHOW) transition(EMPTY);
   }, [interview, transition, mode]);
-  
+
   const handleOnAdd = () => {
     transition(CREATE);
   };
@@ -44,13 +44,13 @@ const Appointment = ({
   };
 
   const handleOnSave = (name, interviewer) => {
-      const interview = {
-        student: name,
-        interviewer
-      };
-  
-      transition(SAVING, true);
-      onCreate(id, interview).then(res => transition(res))
+    const interview = {
+      student: name,
+      interviewer
+    };
+
+    transition(SAVING, true);
+    onCreate(id, interview).then(res => transition(res));
   };
 
   const handleOnDelete = () => {

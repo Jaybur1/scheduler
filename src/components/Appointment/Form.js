@@ -2,43 +2,42 @@ import React, { useState } from "react";
 import InterviewerList from "components/InterviewerList";
 import Button from "components/Button";
 
-
 //@prop interviewers => Array of objects
 //@prop interviewer => Number
 //@prop onSave => function
 //@prop onCancel => funciton
 
-const Form = (props) => {
-  const [name , setName] = useState(props.name || "");
+const Form = props => {
+  const [name, setName] = useState(props.name || "");
   const [interviewer, setInterviewer] = useState(props.interviewer | null);
 
-  const handleOnChangeName = (e) => {
+  const handleOnChangeName = e => {
     let copy = name;
     copy = e.target.value;
-    setName(copy)
-  }
+    setName(copy);
+  };
 
-  const handleOnChangeInterviewer = (id) => {
+  const handleOnChangeInterviewer = id => {
     let copy = interviewer;
     copy = id;
-    setInterviewer(copy)
-  }
+    setInterviewer(copy);
+  };
 
   const reset = () => {
     setName("");
     setInterviewer(null);
-  }
+  };
 
   const cancel = () => {
     reset();
     props.onCancel();
-  }
+  };
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     e.preventDefault();
     reset();
-    props.onSave(name,interviewer);
-  }
+    props.onSave(name, interviewer);
+  };
 
   return (
     <main className="appointment__card appointment__card--create">

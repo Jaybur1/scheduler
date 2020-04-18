@@ -7,21 +7,16 @@ import "components/InterviewerListItem.scss";
 //@param selected => boolean
 //@param setInterviewer => function()
 
-const InterviewerListItem = ({
-  name,
-  avatar,
-  selected,
-  onChange
-}) => {
-
-  const interviewerClass = classnames("interviewers__item",{"interviewers__item--selected":selected})
-
+const InterviewerListItem = ({ name, avatar, selected, onChange }) => {
+  const interviewerClass = classnames("interviewers__item", {
+    "interviewers__item--selected": selected
+  });
 
   return (
-  <li className={interviewerClass} onClick={onChange}>
-    <img className={'interviewers__item-image'} src={avatar} alt={name}/>
-    {selected && name}
-  </li>
+    <li className={interviewerClass} onClick={onChange}>
+      <img className={"interviewers__item-image"} src={avatar} alt={name} />
+      {selected && name}
+    </li>
   );
 };
 
