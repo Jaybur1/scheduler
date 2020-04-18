@@ -54,7 +54,6 @@ export default function useApplicationData() {
     webSocket.onmessage = e => {
       const data = JSON.parse(e.data);
       if (data.type === SET_INTERVIEW) {
-      //  updateAppointments(data.id, data.interview);
        return getDataFromDb();
       }
     };
