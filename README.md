@@ -16,11 +16,6 @@ This app was built to practice:
 
 !["websockets demo"](/docs/websocketsDemo.gif)
 
-3. Error Handling
-
-!["Error handling demo"](/docs/interviewerError.gif)
-
-
 ## Setup
 * Clone this repo: `git clone https://github.com/Jaybur1/scheduler`.
 * Clone the db repo: `git clone https://github.com/Jaybur1/scheduler-api`.
