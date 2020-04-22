@@ -36,26 +36,28 @@ export default function useApplicationData() {
       .catch(err => alert(err));
   };
 
-  const updateSpotsFromDb = () => {
-    return axios.get("/api/days").then(days => {
-      setState(prev => ({
-        ...prev,
-        days: [...days.data]
-      }));
+  const updateSpots = action => {
+    const currentDay = state.days.filter(day => day.name === state.day)[0];
+    const days = [...state.days];
+    if (action === "add") currentDay.spots += 1;
+    if (action === "subtract") currentDay.spots -= 1;
+
+    const updatedDays = days.map(day => {
+      if (day.id === currentDay.id) {
+        return { ...currentDay };
+      }
+      return day;
     });
+
+    setState(prev => ({ ...prev, days: [...updatedDays] }));
   };
 
   useEffect(() => {
     const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
-    const readyState = webSocket.readyState;
-    console.log("state", readyState);
-    webSocket.onopen = e => {
-      webSocket.send("ping");
-    };
     webSocket.onmessage = e => {
       const data = JSON.parse(e.data);
       if (data.type === SET_INTERVIEW) {
-        return getDataFromDb();
+        // return getDataFromDb();
       }
     };
     getDataFromDb();
@@ -63,6 +65,7 @@ export default function useApplicationData() {
   }, []);
 
   const bookInterview = (id, interview) => {
+    const status = !state.appointments[id].interview && "subtract";
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -75,7 +78,7 @@ export default function useApplicationData() {
     return axios
       .put(`/api/appointments/${id}`, { ...appointment })
       .then(res => {
-        updateSpotsFromDb();
+        updateSpots(status);
         setState(prev => ({ ...prev, appointments }));
         return SHOW;
       })
@@ -98,7 +101,7 @@ export default function useApplicationData() {
     return axios
       .delete(`/api/appointments/${id}`)
       .then(res => {
-        updateSpotsFromDb();
+        updateSpots("add");
         setState(prev => ({ ...prev, appointments }));
         return EMPTY;
       })
