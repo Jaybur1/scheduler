@@ -49,7 +49,7 @@ const Form = props => {
   };
 
   const handleKeyPress = (e) => {
-    if(e.which === 13/*Enter*/){
+    if(e.which === 13/*Enter */){
       e.preventDefault();
     }
     setError("")
