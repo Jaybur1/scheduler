@@ -57,7 +57,7 @@ export default function useApplicationData() {
     webSocket.onmessage = e => {
       const data = JSON.parse(e.data);
       if (data.type === SET_INTERVIEW) {
-        // return getDataFromDb();
+        return getDataFromDb();
       }
     };
     getDataFromDb();
