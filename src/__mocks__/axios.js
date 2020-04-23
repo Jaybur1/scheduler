@@ -63,7 +63,7 @@ export default {
       });
     }
 
-    if (url === "/api/appointments") {
+    if (url === "https://my-interview-scheduler.herokuapp.com/api/appointments") {
       return Promise.resolve({
         status: 200,
         statusText: "OK",
@@ -71,7 +71,7 @@ export default {
       });
     }
 
-    if (url === "/api/interviewers") {
+    if (url === "https://my-interview-scheduler.herokuapp.com/api/interviewers") {
       return Promise.resolve({
         status: 200,
         statusText: "OK",
