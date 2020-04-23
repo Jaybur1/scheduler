@@ -15,7 +15,6 @@ import {
 } from "@testing-library/react";
 
 import Application from "components/Application";
-import { debug } from "webpack";
 
 beforeEach(() => {
   process.env = Object.assign(process.env, {
@@ -126,38 +125,42 @@ describe("Application", () => {
 
   it("shows the save error when failing to save an appointment", async () => {
     axios.put.mockRejectedValueOnce();
-    // 1. Render the Application.
+
     const { container } = render(<Application />);
-    // 2. Wait until the text "Archie Cohen" is displayed.
+
     await waitForElement(() => getByText(container, "Archie Cohen"));
-    //get the booked appointment
+
     const appointment = getAllByTestId(container, "appointment")[0];
     fireEvent.click(getByAltText(appointment, "Add"));
-    //input the name "Lydia Miller-Jones"
+
     fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {
       target: { value: "Lydia Miller-Jones" }
     });
-    //pick Sylvia Palmer as the interviewer
+
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
-    //click save to confirm the interview
+
     fireEvent.click(getByText(appointment, "Save"));
 
     expect(getByText(container, "Saving ...")).toBeInTheDocument();
 
-    await waitForElement(() => getByText(appointment,"Something went wrong while saving..."));
+    await waitForElement(() =>
+      getByText(appointment, "Something went wrong while saving...")
+    );
 
-    fireEvent.click(getByAltText(appointment,"Close"));
+    fireEvent.click(getByAltText(appointment, "Close"));
 
-    expect(getByPlaceholderText(appointment, /enter student name/i)).toBeInTheDocument();
+    expect(
+      getByPlaceholderText(appointment, /enter student name/i)
+    ).toBeInTheDocument();
   });
 
   it("shows the delete error when failing to delete an existing appointment", async () => {
     axios.delete.mockRejectedValueOnce();
-    // 1. Render the Application.
+
     const { container } = render(<Application />);
-    // 2. Wait until the text "Archie Cohen" is displayed.
+
     await waitForElement(() => getByText(container, "Archie Cohen"));
-    //get the booked appointment
+
     const appointment = getAllByTestId(
       container,
       "appointment"
@@ -169,10 +172,12 @@ describe("Application", () => {
 
     expect(getByText(appointment, "Deleting ...")).toBeInTheDocument();
 
-     await waitForElement(() => getByText(appointment,"Something went wrong while deleting..."));
+    await waitForElement(() =>
+      getByText(appointment, "Something went wrong while deleting...")
+    );
 
-    fireEvent.click(getByAltText(appointment,"Close"));
+    fireEvent.click(getByAltText(appointment, "Close"));
 
-     expect(getByText(appointment, "Archie Cohen")).toBeInTheDocument();
+    expect(getByText(appointment, "Archie Cohen")).toBeInTheDocument();
   });
 });

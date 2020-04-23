@@ -35,12 +35,12 @@ const Form = props => {
 
   const onSubmit = e => {
     e.preventDefault();
-    if(!name) {
+    if (!name) {
       setError("Student name cannot be blank");
       return;
     }
 
-    if(!interviewer || interviewer === 0){
+    if (!interviewer || interviewer === 0) {
       setError("Please pick an interviewer");
       return;
     }
@@ -48,12 +48,12 @@ const Form = props => {
     props.onSave(name, interviewer);
   };
 
-  const handleKeyPress = (e) => {
-    if(e.which === 13/*Enter */){
+  const handleKeyPress = e => {
+    if (e.which === 13 /*Enter */) {
       e.preventDefault();
     }
-    setError("")
-  }
+    setError("");
+  };
 
   return (
     <main className="appointment__card appointment__card--create">

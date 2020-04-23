@@ -18,4 +18,4 @@ export const getInterviewersForDay = (state, day) => {
   return currentDay.length === 0
     ? []
     : currentDay[0].interviewers.map(appoId => state.interviewers[appoId]);
-}
+};
