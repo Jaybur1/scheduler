@@ -16,7 +16,10 @@ This app was built to practice:
 
 !["websockets demo"](/docs/websocketsDemo.gif)
 
-## Setup
+## Live Demo
+* For Live demo you can visit => [Here](https://stupefied-pare-e97d13.netlify.app/) <=
+
+## Setup on your local machine
 * Clone this repo: `git clone https://github.com/Jaybur1/scheduler`.
 * Clone the db repo: `git clone https://github.com/Jaybur1/scheduler-api`.
 * Follow the instructions [here](https://github.com/Jaybur1/scheduler-api) to set up the db.

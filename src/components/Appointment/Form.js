@@ -40,10 +40,10 @@ const Form = props => {
       return;
     }
 
-    // if(!interviewer || interviewer === 0){
-    //   setError("Please pick an interviewer");
-    //   return;
-    // }
+    if(!interviewer || interviewer === 0){
+      setError("Please pick an interviewer");
+      return;
+    }
     reset();
     props.onSave(name, interviewer);
   };
