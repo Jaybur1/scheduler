@@ -20,9 +20,9 @@ export default function useApplicationData() {
 
   const getDataFromDb = () => {
     return Promise.all([
-      Promise.resolve(axios.get("https://my-interview-scheduler.herokuapp.com/api/days")),
-      Promise.resolve(axios.get("https://my-interview-scheduler.herokuapp.com/api/appointments")),
-      Promise.resolve(axios.get("https://my-interview-scheduler.herokuapp.com/api/interviewers"))
+      Promise.resolve(axios.get("/api/days")),
+      Promise.resolve(axios.get("/api/appointments")),
+      Promise.resolve(axios.get("/api/interviewers"))
     ])
       .then(all => {
         const [days, appointments, interviewers] = all;
@@ -53,7 +53,7 @@ export default function useApplicationData() {
   };
 
   useEffect(() => {
-    const webSocket = new WebSocket("wss://my-interview-scheduler.herokuapp.com");
+    const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     webSocket.onmessage = e => {
       const data = JSON.parse(e.data);
       if (data.type === SET_INTERVIEW) {
@@ -76,7 +76,7 @@ export default function useApplicationData() {
       [id]: appointment
     };
     return axios
-      .put(`https://my-interview-scheduler.herokuapp.com/api/appointments/${id}`, { ...appointment })
+      .put(`/api/appointments/${id}`, { ...appointment })
       .then(res => {
         updateSpots(status);
         setState(prev => ({ ...prev, appointments }));
@@ -99,7 +99,7 @@ export default function useApplicationData() {
     };
 
     return axios
-      .delete(`https://my-interview-scheduler.herokuapp.com/api/appointments/${id}`)
+      .delete(`/api/appointments/${id}`)
       .then(res => {
         updateSpots("add");
         setState(prev => ({ ...prev, appointments }));
