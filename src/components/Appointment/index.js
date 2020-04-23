@@ -54,7 +54,7 @@ const Appointment = ({
   };
 
   const handleOnDelete = () => {
-    transition(CONFIRM, true);
+    transition(CONFIRM);
   };
 
   const handleConfirm = () => {
