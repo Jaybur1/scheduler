@@ -178,6 +178,6 @@ describe("Application", () => {
 
     fireEvent.click(getByAltText(appointment, "Close"));
 
-    // expect(getByText(appointment, "Archie Cohen")).toBeInTheDocument();
+    expect(getByText(appointment, "Archie Cohen")).toBeInTheDocument();
   });
 });

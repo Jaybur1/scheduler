@@ -59,7 +59,7 @@ const Appointment = ({
 
   const handleConfirm = () => {
     transition(DELETING, true);
-    onDelete(id).then(res => transition(res));
+    onDelete(id).then(res => (res === SAVING_ERROR || res === DELETING_ERROR)? transition(res,true) : transition(res));
   };
 
   const handleOnEdit = () => {
