@@ -17,7 +17,7 @@ This app was built to practice:
 !["websockets demo"](/docs/websocketsDemo.gif)
 
 ## Live Demo
-* For Live demo you can visit => [Here](https://stupefied-pare-e97d13.netlify.app/) <=
+* For Live demo you can visit => [Here](https://upbeat-easley-1858ea.netlify.app) <=
 
 ## Setup on your local machine
 * Clone this repo: `git clone https://github.com/Jaybur1/scheduler`.
