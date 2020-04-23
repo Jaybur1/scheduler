@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:12.16
+      - image: circleci/node:10.16
 
     working_directory: ~/client
 
@@ -19,22 +19,21 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm test
 
-deploy:
-  machine:
-    enabled: true
+  deploy:
+    machine:
+      enabled: true
 
-  working_directory: ~/client
+    working_directory: ~/client
 
-  steps:
-    - add_ssh_keys:
-        fingerprints:
-          - "aa:44:26:4a:f1:4f:0a:06:91:00:18:f5:ef:32:b4:5f"
-    - checkout
-    - run:
-        name: Push Master to Production
-        command: |
-          git push https://github.com/Jaybur1/scheduler master:production
-
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "aa:44:26:4a:f1:4f:0a:06:91:00:18:f5:ef:32:b4:5f"
+      - checkout
+      - run:
+          name: Push Master to Production
+          command: |
+            git push https://github.com/Jaybur1/scheduler.git master:production
 
 workflows:
   version: 2
